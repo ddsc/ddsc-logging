@@ -3,21 +3,24 @@ import socket
 
 import pika
 
-HOSTNAME = socket.gethostname()
-
 
 class DDSCHandler(logging.Handler):
+    """Docstring"""
 
     def __init__(self, broker_url):
         super(DDSCHandler, self).__init__()
         self.broker_url = broker_url
         self.is_connected = False
 
-    def connect(self):
+    def __connect(self):
         self.connection = pika.BlockingConnection(
             pika.URLParameters(self.broker_url)
         )
         self.channel = self.connection.channel()
+        self.channel.exchange_declare(
+            exchange='ddsc.log',
+            type='topic'
+        )
         self.channel.queue_declare(queue='hello')
 
     def emit(self, record, depth=1):
@@ -29,16 +32,20 @@ class DDSCHandler(logging.Handler):
 
         if not self.is_connected:
             try:
-                self.connect()
+                self.__connect()
                 self.is_connected = True
             except:
                 pass
 
         if self.is_connected and depth < 3:
             try:
+                routing_key = "{0}.{1}".format(
+                    socket.gethostname(),
+                    record.levelname
+                )
                 self.channel.basic_publish(
-                    exchange='',
-                    routing_key='hello',
+                    exchange='ddsc.log',
+                    routing_key=routing_key,
                     body=self.format(record)
                 )
             except:
