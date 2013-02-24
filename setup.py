@@ -9,12 +9,13 @@ long_description = '\n\n'.join([
     ])
 
 install_requires = [
+    'pika',
     'setuptools',
     ],
 
 tests_require = [
-    'nose',
     'coverage',
+    'nose',
     ]
 
 setup(name='ddsc-logging',
