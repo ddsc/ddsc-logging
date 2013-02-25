@@ -20,13 +20,13 @@ tests_require = [
 
 setup(name='ddsc-logging',
       version=version,
-      description="TODO",
+      description="DDSC library for centralized logging of distributed apps",
       long_description=long_description,
       # Get strings from http://www.python.org/pypi?%3Aaction=list_classifiers
       classifiers=[],
       keywords=[],
-      author='TODO',
-      author_email='TODO@nelen-schuurmans.nl',
+      author='Carsten Byrman',
+      author_email='carsten.byrman@nelen-schuurmans.nl',
       url='',
       license='GPL',
       packages=['ddsc_logging'],
