@@ -88,8 +88,9 @@ class DDSCHandler(logging.Handler):
                         record.levelname  # severity
                     ),
                     body=json.dumps({
+                        'msg': self.format(record),
                         'hostname': socket.gethostname(),
-                        'msg': self.format(record)
+                        'severity': record.levelname
                     })
                 )
             except:
