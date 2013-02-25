@@ -73,6 +73,7 @@ class DDSCHandler(logging.Handler):
         # successfully. See my comments on `is_connected` above.
 
         if not self.is_connected:
+
             try:
                 self.__connect()
                 self.is_connected = True
@@ -80,21 +81,42 @@ class DDSCHandler(logging.Handler):
                 pass
 
         if self.is_connected and depth < 3:
+
             try:
-                self.channel.basic_publish(
-                    exchange=EXCHANGE,
-                    routing_key="{0}.{1}".format(
-                        socket.gethostname(),  # hostname
-                        record.levelname  # severity
-                    ),
-                    body=json.dumps({
-                        'msg': self.format(record),
-                        'hostname': socket.gethostname(),
-                        'severity': record.levelname
-                    })
+
+                # Publish the (unformatted) message along with useful metadata.
+                # The unformatted message is sent, because
+                # See: http://docs.python.org/3.2/library/logging.html
+                # #logrecord-attributes
+
+                body = json.dumps({
+                    'file': record.pathname,  # full pathname of source file
+                    'host': socket.gethostname(),  # hostname
+                    'level': record.levelname,  # DEBUG, INFO, etc
+                    'line': record.lineno,  # source line number
+                    'msg': record.message,  # the (unformatted) message
+                    'time': record.created,  # milliseconds since epoch
+                })
+
+                # Allow for filtering based on hostname and severity.
+
+                routing_key = "{0}.{1}".format(
+                    socket.gethostname(),
+                    record.levelname
                 )
+
+                # Publish the message.
+
+                self.channel.basic_publish(
+                    body=body,
+                    exchange=EXCHANGE,
+                    routing_key=routing_key,
+                )
+
             except:
+
                 # RabbitMQ might be down. Another possibility is that it has
                 # been restarted, so it is worthwhile to do a 2nd round.
+
                 self.is_connected = False
                 self.emit(record, depth + 1)
