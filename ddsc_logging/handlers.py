@@ -88,7 +88,7 @@ class DDSCHandler(logging.Handler):
                         record.levelname  # severity
                     ),
                     body=json.dumps({
-                        'hostname': socket.hethostname(),
+                        'hostname': socket.gethostname(),
                         'msg': self.format(record)
                     })
                 )
