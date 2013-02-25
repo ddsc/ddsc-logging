@@ -19,7 +19,8 @@ class DDSCHandler(logging.Handler):
         self.channel = self.connection.channel()
         self.channel.exchange_declare(
             exchange='ddsc.log',
-            type='topic'
+            type='topic',
+            durable=True
         )
         self.channel.queue_declare(queue='hello')
 
@@ -39,13 +40,12 @@ class DDSCHandler(logging.Handler):
 
         if self.is_connected and depth < 3:
             try:
-                routing_key = "{0}.{1}".format(
-                    socket.gethostname(),
-                    record.levelname
-                )
                 self.channel.basic_publish(
                     exchange='ddsc.log',
-                    routing_key=routing_key,
+                    routing_key="{0}.{1}".format(
+                        socket.gethostname(),
+                        record.levelname
+                    ),
                     body=self.format(record)
                 )
             except:
