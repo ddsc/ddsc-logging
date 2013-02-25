@@ -1,3 +1,4 @@
+import json
 import logging
 import socket
 
@@ -86,7 +87,10 @@ class DDSCHandler(logging.Handler):
                         socket.gethostname(),  # hostname
                         record.levelname  # severity
                     ),
-                    body=self.format(record)
+                    body=json.dumps({
+                        'hostname': socket.hethostname(),
+                        'msg': self.format(record)
+                    })
                 )
             except:
                 # RabbitMQ might be down. Another possibility is that it has
