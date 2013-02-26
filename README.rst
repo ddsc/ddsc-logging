@@ -1,7 +1,7 @@
 ddsc-logging
 ============
 
-In the DDSC project, several applications are collaborating in a distributed environment. To monitor the entire system, it's convenient to aggregate all logging messages in a central place. The ddsc-logging library solves this by providing a handler that sends all disparate messages to a single broker, viz. RabbitMQ. From there on, the messages can be monitored on a console, persisted to a database, etc. Filtering can be done based on 2 criteria: the source (hostname) and severity of the message. The code is large based on the excellent tutorial at `www.rabbitmq.com <http://www.rabbitmq.com/>`_.
+In the DDSC project, several applications are collaborating in a distributed environment. To monitor the entire system, it's convenient to aggregate all logging messages in a central place. The ddsc-logging library solves this by providing a handler that sends all disparate messages to a single broker, viz. RabbitMQ. From there on, the messages can be monitored at your console, persisted to a database, etc. Filtering can be done based on 2 criteria: the source (hostname) and severity of the message. The code is large based on the excellent tutorial at `www.rabbitmq.com <http://www.rabbitmq.com/>`_.
 
 Building ddsc-logging
 ---------------------
