@@ -83,6 +83,12 @@ class DDSCHandler(logging.Handler):
 
             try:
 
+                # The message attribute is only available on record
+                # if Formatter.format() was invoked earlier.
+
+                if not hasattr(record, 'message'):
+                    self.format(record)
+
                 # Publish the (unformatted) message along with useful metadata.
                 # The unformatted message is sent, because
                 # See: http://docs.python.org/3.2/library/logging.html
