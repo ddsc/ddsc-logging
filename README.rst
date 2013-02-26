@@ -1,34 +1,33 @@
 ddsc-logging
-==========================================
+============
 
-Introduction
+In the DDSC project, several applications are collaborating in a distributed environment. To monitor the entire system, it's convenient to aggregate all logging messages in a central place. The ddsc-logging library solves this by providing a handler that sends all disparate messages to a single broker, viz. RabbitMQ. From there on, the messages can be monitored on a console, persisted to a database, etc. Filtering can be done based on 2 criteria: the source (hostname) and severity of the message. The code is large based on the excellent tutorial at `www.rabbitmq.com <http://www.rabbitmq.com/>`_.
 
-Usage, etc.
+Building ddsc-logging
+---------------------
 
+Being a library, ddsc-core is typically used within other applications. To build just ddsc-core, follow these steps:
 
-Post-nensskel setup TODO
-------------------------
+First, make sure the Python header files are installed. On Ubuntu::
 
-Here are some instructions on what to do after you've created the project with
-nensskel.
+	sudo apt-get install python-dev
 
-- Fill in a short description on https://github.com/lizardsystem/ddsc-logging or
-  https://github.com/nens/ddsc-logging if you haven't done so already.
+Then, checkout the repository, bootstrap, and run zc.buildout::
 
-- Use the same description in the ``setup.py``'s "description" field.
+	git clone https://github.com/ddsc/ddsc-logging.git
+	cd ddsc-logging
+	python bootstrap.py
+	bin/buildout
 
-- Fill in your username and email address in the ``setup.py``, see the
-  ``TODO`` fields.
+Using ddsc-logging
+------------------
 
-- Check https://github.com/nens/ddsc-logging/settings/collaboration if the team
-  "Nelen & Schuurmans" has access.
+Register the handler when you configure logging for your application. For example, when `configuring logging from a dictionary <http://docs.python.org/2/library/logging.config.html#logging.config.dictConfig>`_::
 
-- Add a new jenkins job at
-  http://buildbot.lizardsystem.nl/jenkins/view/djangoapps/newJob or
-  http://buildbot.lizardsystem.nl/jenkins/view/libraries/newJob . Job name
-  should be "ddsc-logging", make the project a copy of the existing "lizard-wms"
-  project (for django apps) or "nensskel" (for libraries). On the next page,
-  change the "github project" to ``https://github.com/nens/ddsc-logging/`` and
-  "repository url" fields to ``git@github.com:nens/ddsc-logging.git`` (you might
-  need to replace "nens" with "lizardsystem"). The rest of the settings should
-  be OK.
+	'rmq': {
+	    'class': 'ddsc_logging.handlers.DDSCHandler',
+	    'level': 'INFO',
+	    'broker_url': BROKER_URL,  # E.g. amqp://guest:guest@localhost:5672/%2F
+	}
+
+By default, a topic exchange named ddsc.log is created. This can be overriden by passing another name to the constructor of DDSCHandler.

@@ -20,7 +20,7 @@ tests_require = [
 
 setup(name='ddsc-logging',
       version=version,
-      description="DDSC library for centralized logging of distributed apps",
+      description="DDSC library for distributed logging",
       long_description=long_description,
       # Get strings from http://www.python.org/pypi?%3Aaction=list_classifiers
       classifiers=[],
