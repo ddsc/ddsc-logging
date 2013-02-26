@@ -4,8 +4,6 @@ import socket
 
 import pika
 
-EXCHANGE = "ddsc.log"
-
 
 class DDSCHandler(logging.Handler):
     """A handler for distributed event logging.
@@ -17,7 +15,7 @@ class DDSCHandler(logging.Handler):
 
     """
 
-    def __init__(self, broker_url):
+    def __init__(self, broker_url, exchange="ddsc.log"):
         """Initialize a new DDSC logging handler.
 
         Note that `broker_url` should be URL encoded. When using the default
@@ -27,6 +25,7 @@ class DDSCHandler(logging.Handler):
         """
         super(DDSCHandler, self).__init__()
         self.broker_url = broker_url
+        self.exchange = exchange
         self.is_connected = False
 
     def __connect(self):
@@ -53,7 +52,7 @@ class DDSCHandler(logging.Handler):
 
         self.channel = self.connection.channel()
         self.channel.exchange_declare(
-            exchange=EXCHANGE,
+            exchange=self.exchange,
             type='topic',
             durable=True
         )
@@ -109,7 +108,7 @@ class DDSCHandler(logging.Handler):
 
                 self.channel.basic_publish(
                     body=body,
-                    exchange=EXCHANGE,
+                    exchange=self.exchange,
                     routing_key=routing_key,
                 )
 
