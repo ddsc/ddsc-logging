@@ -30,4 +30,4 @@ Register the handler when you configure logging for your application. For exampl
 	    'broker_url': BROKER_URL,  # E.g. amqp://guest:guest@localhost:5672/%2F
 	}
 
-By default, a topic exchange named ddsc.log is created. This can be overriden by passing another name to the constructor of DDSCHandler.
+By default, a `topic exchange <http://www.rabbitmq.com/tutorials/tutorial-five-python.html>`_ named ddsc.log is created. This can be overriden by passing another name to the constructor of DDSCHandler.
