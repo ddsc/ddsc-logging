@@ -101,6 +101,10 @@ class DDSCHandler(logging.Handler):
                 # `2003-07-08 16:49:45,896`. See:
                 # http://docs.python.org/3.2/library/logging.html#
                 # logrecord-attributes
+                #
+                # TODO: if no formatter has been set on the logger,
+                # the `asctime` attribute is not available,
+                # resulting in an exception!
 
                 body = json.dumps({
                     'file': record.pathname,  # full pathname of source file
@@ -109,7 +113,7 @@ class DDSCHandler(logging.Handler):
                     'line': record.lineno,  # source line number
                     'msg': record.message,  # the message
                     'time': record.created,  # milliseconds since epoch
-                    'asctime': record.asctime,  # human-readable time
+#                   'asctime': record.asctime,  # human-readable time
                 })
 
                 # Allow for filtering based on hostname and severity.
