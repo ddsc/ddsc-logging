@@ -89,18 +89,27 @@ class DDSCHandler(logging.Handler):
                 if not hasattr(record, 'message'):
                     self.format(record)
 
-                # Publish the (unformatted) message along with useful metadata.
-                # The unformatted message is sent, because
-                # See: http://docs.python.org/3.2/library/logging.html
-                # #logrecord-attributes
+                # Publish the message along with useful metadata. Do not send
+                # the fully formatted message, i.e. self.format(record), as
+                # formatting can be different on each individual server;
+                # rather send a dictionary of useful pieces instead.
+                #
+                # The `asctime` is sent for convenience, e.g. when inspecting
+                # messages directly via the RabbitMQ management interface.
+                # For further processing, however, `time` is more useful,
+                # because `asctime` is not reliably formatted as
+                # `2003-07-08 16:49:45,896`. See:
+                # http://docs.python.org/3.2/library/logging.html#
+                # logrecord-attributes
 
                 body = json.dumps({
                     'file': record.pathname,  # full pathname of source file
                     'host': socket.gethostname(),  # hostname
-                    'level': record.levelname,  # DEBUG, INFO, etc
+                    'level': record.levelname,  # severity (DEBUG, INFO, etc)
                     'line': record.lineno,  # source line number
-                    'msg': record.message,  # the (unformatted) message
+                    'msg': record.message,  # the message
                     'time': record.created,  # milliseconds since epoch
+                    'asctime': record.asctime,  # human-readable time
                 })
 
                 # Allow for filtering based on hostname and severity.
