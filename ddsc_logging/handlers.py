@@ -107,12 +107,12 @@ class DDSCHandler(logging.Handler):
                 # resulting in an exception!
 
                 body = json.dumps({
-                    'file': record.pathname,  # full pathname of source file
+                    'source': record.pathname,  # full pathname of source file
                     'host': socket.gethostname(),  # hostname
                     'level': record.levelname,  # severity (DEBUG, INFO, etc)
                     'line': record.lineno,  # source line number
-                    'msg': record.message,  # the message
-                    'time': record.created,  # milliseconds since epoch
+                    'message': record.message,  # the log message
+                    'time': record.created,  # seconds since epoch
 #                   'asctime': record.asctime,  # human-readable time
                 })
 
