@@ -123,11 +123,13 @@ class DDSCHandler(logging.Handler):
                     record.levelname
                 )
 
-                # Publish the message.
+                # Publish the message; we don't want to loose it
+                # when RabbitMQ dies, so make it persistent.
 
                 self.channel.basic_publish(
                     body=body,
                     exchange=self.exchange,
+                    properties=pika.BasicProperties(delivery_mode=2),
                     routing_key=routing_key,
                 )
 
