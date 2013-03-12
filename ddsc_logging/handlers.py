@@ -19,7 +19,7 @@ class DDSCHandler(logging.Handler):
         """Initialize a new DDSC logging handler.
 
         Note that `broker_url` should be URL encoded. When using the default
-        exchange, for example, the final forard slash must be represented
+        exchange, for example, the final forward slash must be represented
         as `%2F`.
 
         """
