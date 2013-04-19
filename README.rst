@@ -6,7 +6,7 @@ In the DDSC project, several applications are collaborating in a distributed env
 Building ddsc-logging
 ---------------------
 
-Being a library, ddsc-core is typically used within other applications. To build just ddsc-core, follow these steps:
+Being a library, ddsc-logging is typically used within other applications. To build just ddsc-logging, follow these steps:
 
 First, make sure the Python header files are installed. On Ubuntu::
 
