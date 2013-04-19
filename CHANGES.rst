@@ -6,3 +6,5 @@ Changelog of ddsc-logging
 ----------------
 
 - Initial project structure created with nensskel 1.30.
+
+- Implemented a first version of a handler for distributed logging.
