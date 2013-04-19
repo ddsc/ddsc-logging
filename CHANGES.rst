@@ -2,7 +2,7 @@ Changelog of ddsc-logging
 ===================================================
 
 
-0.1 (unreleased)
+0.1 (2013-04-19)
 ----------------
 
 - Initial project structure created with nensskel 1.30.
