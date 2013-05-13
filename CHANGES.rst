@@ -5,7 +5,7 @@ Changelog of ddsc-logging
 0.2 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Switched to MIT license.
 
 
 0.1 (2013-04-19)
